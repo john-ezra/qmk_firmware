@@ -1,0 +1,8 @@
+DEBUG_ENABLE = no
+CONSOLE_ENABLE = no
+MOUSEKEY_ENABLE = no
+AUDIO_ENABLE = no
+ENCODER_ENABLE = no
+DEBOUNCE_TYPE = sym_eager_pk
+
+SRC += muse.c
