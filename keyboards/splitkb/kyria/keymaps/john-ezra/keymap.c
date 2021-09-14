@@ -33,6 +33,8 @@ enum kyria_keycodes {
   UNDO
 };
 
+#define HNTS DF(_HNTS)
+#define QWERTY DF(_QWERTY)
 #define BSP_CMD MT(MOD_LGUI, KC_BSPC)
 #define SFT_ENT MT(MOD_LSFT, KC_ENT)
 #define UNDO G(KC_Z)
@@ -44,11 +46,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * Default: HNTS
  *
  * ,-----------------------------------------------.                                  ,-----------------------------------------------.
- * |   `   |   Z   |   R   |   L   |   D   |   W   |                                  |   Y   |   P   |   U   |   X   |   Q   |  | \  |
+ * |  Find |   Z   |   R   |   L   |   D   |   W   |                                  |   Y   |   P   |   U   |   X   |   Q   |  | \  |
  * |-------+-------+-------+-------+-------+-------|                                  |-------+-------+-------+-------+-------+-------|
- * |  Esc  |   H   |   N   |   T   |   S   |   C   |                                  |   B   |   I   |   E   |   O   |   A   |  Esc  |
+ * |Cpy/Pst|   H   |   N   |   T   |   S   |   C   |                                  |   B   |   I   |   E   |   O   |   A   |  Esc  |
  * |-------+-------+-------+-------+-------+-------+---------------.  ,---------------+-------+-------+-------+-------+-------+-------|
- * |Cpy/Pst|   K   |   V   |   M   |   F   |   G   | Ctrl  |  Alt  |  |  Caps |  Del  |   J   |  ; :  |  , <  |  . >  |  / ?  |  ' "  |
+ * |  Undo |   K   |   V   |   M   |   F   |   G   | Ctrl  |  Alt  |  |  Caps |  Del  |   J   |  ; :  |  , <  |  . >  |  / ?  |  ' "  |
  * `-------+-------+-------+-------+-------+-------+-------+-------|  |-------+-------+-------+-------+-------+-----------------------'
  *                         |  Up   | Down  | Lower | Space | BSPC  |  |  Tab  | Shift | Raise |  Left | Right |
  *                         `---------------------------------------'  `---------------------------------------'
@@ -83,44 +85,44 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 
 /*
- * Lower: Symbols
+ * Lower: Symbols & Media
  *
  * ,-----------------------------------------------.                                  ,-----------------------------------------------.
- * |       |   !   |   @   |   {   |   }   |   |   |                                  |       |       |       |       |       |  | \  |
+ * |       |   *   |   /   |   +   |   -   |   =   |                                  |   |   |   {   |   }   |   @   |   !   |   `   |
  * |-------+-------+-------+-------+-------+-------|                                  |-------+-------+-------+-------+-------+-------|
- * |       |   #   |   $   |   (   |   )   |  ` ~  |                                  |   +   |   -   |   *   |   /   |   =   |       |
+ * |       | Left  |  Up   | Down  | Right |       |                                  |   \   |   (   |   )   |   $   |   #   |   ~   |
  * |-------+-------+-------+-------+-------+-------+---------------.  ,---------------+-------+-------+-------+-------+-------+-------|
- * |       |   %   |   ^   |   [   |   ]   |   &   |       |       |  |       |       |      |       |       |       |       |        |
+ * |       | Vol-  | Vol+  | Prev  | Play  |  Next |       |       |  |       |       |   _   |   [   |   ]   |   ^   |   %   |   &   |
  * `-------+-------+-------+-------+-------+-------+-------+-------|  |-------+-------+-------+-------+-------+-----------------------'
- *                         |       |       |       |       |       |  |       |       |       |       |       |
+ *                         |Bright+|Bright-|       |       |       |  |       |       |       |       |       |
  *                         `---------------------------------------'  `---------------------------------------'
  */
 
 [_LOWER] = LAYOUT(
-     KC_GRV, KC_EXLM,   KC_AT, KC_LCBR, KC_RCBR, KC_PIPE,                                      _______, _______, _______, _______, _______, _______,
-    KC_TILD, KC_HASH,  KC_DLR, KC_LPRN, KC_RPRN, KC_BSLS,                                      KC_PLUS, KC_MINS, KC_ASTR, KC_SLSH,  KC_EQL, _______,
-    KC_AMPR, KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, KC_UNDS, _______, _______,  _______, _______, _______, _______, _______, _______, _______, _______,
-                               _______, _______, _______, _______, _______,  _______, _______, _______, _______, _______
+    _______, KC_ASTR, KC_SLSH, KC_PLUS, KC_MINS,  KC_EQL,                                      KC_PIPE, KC_LCBR, KC_RCBR,   KC_AT, KC_EXLM,  KC_GRV,
+    _______, KC_LEFT,   KC_UP, KC_DOWN, KC_RGHT, _______,                                      KC_BSLS, KC_LPRN, KC_RPRN,  KC_DLR, KC_HASH, KC_TILD,
+    _______, KC_VOLD, KC_VOLU, KC_MPRV, KC_MPLY, KC_MNXT, _______, _______,  _______, _______, KC_UNDS, KC_LBRC, KC_RBRC, KC_CIRC, KC_PERC, KC_AMPR,
+                               KC_BRIU, KC_BRID, _______, _______, _______,  _______, _______, _______, _______, _______
 ),
 
 /*
- * Raise: Numbers & Media
+ * Raise: Numbers
  *
  * ,-----------------------------------------------.                                  ,-----------------------------------------------.
- * |       |   1   |   2   |   3   |   4   |   5   |                                  |   6   |   7   |   8   |   9   |   0   |       |
+ * |       |  F1   |  F2   |  F3   |  F4   |  F5   |                                  |   F6  |   F7  |   F8  |   F9  |  F10  |  F11  |
  * |-------+-------+-------+-------+-------+-------|                                  |-------+-------+-------+-------+-------+-------|
- * |       | Prev  | Play  | Next  | VolUp | Mute  |                                  |Bright+|  Left |  Down |  Up   | Right |       |
+ * |       |   1   |   2   |   3   |   4   |   5   |                                  |   6   |   7   |   8   |   9   |   0   |  F12  |
  * |-------+-------+-------+-------+-------+-------+---------------.  ,---------------+-------+-------+-------+-------+-------+-------|
- * |       |       |       |       | VolDn |       |       |       |  |       |       |Bright-|       |       |       |       |       |
+ * |       |       |       |       |       |       |       |       |  |       |       |       |  Left |   Up  |  Down | Right |       |
  * `-------+-------+-------+-------+-------+-------+-------+-------|  |-------+-------+-------+-------+-------+-----------------------'
  *                         |       |       |       |       |       |  |       |       |       |       |       |
  *                         `---------------------------------------'  `---------------------------------------'
  */
 
 [_RAISE] = LAYOUT(
-    _______, _______, _______, _______, _______, _______,                                      _______, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, _______,
-    _______,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0, _______,
-    KC_VOLD, KC_VOLU, KC_MPRV, KC_MPLY, KC_MNXT, _______, _______, _______,  _______, _______, _______, _______, _______, _______, _______, _______,
+    _______,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                                        KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11,
+    _______,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,  KC_F12,
+    _______, _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______, KC_LEFT,   KC_UP, KC_DOWN, KC_RGHT, _______,
                                _______, _______, _______, _______, _______,  _______, _______, _______, _______, _______
 ),
 
@@ -128,9 +130,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   * Adjust: Function Keys & RGB
   *
   * ,-----------------------------------------------.                                  ,-----------------------------------------------.
-  * |       |  F1   |  F2   |  F3   |  F4   |  F5   |                                  |   F6  |   F7  |   F8  |   F9  |  F10  |       |
+  * |       |       |       |       |       |       |                                  |       |       |       | HNTS  |QWERTY |       |
   * |-------+-------+-------+-------+-------+-------|                                  |-------+-------+-------+-------+-------+-------|
-  * |       |  TOG  |  SAI  |  HUI  |  VAI  |  MOD  |                                  |       |       |       |  F11  |  F12  |  NKRO |
+  * |       |  TOG  |  SAI  |  HUI  |  VAI  |  MOD  |                                  |       | NKRO  |OS SWAP|       |       |       |
   * |-------+-------+-------+-------+-------+-------+---------------.  ,---------------+-------+-------+-------+-------+-------+-------|
   * |       |       |  SAD  |  HUD  |  VAD  | RMOD  |       |       |  |       |       |       |       |       |       |       |       |
   * `-------+-------+-------+-------+-------+-------+-------+-------|  |-------+-------+-------+-------+-------+-----------------------'
@@ -139,27 +141,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   */
 
 [_ADJUST] = LAYOUT(
-    _______,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                                       KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10, NK_TOGG,
-    _______, RGB_TOG, RGB_SAI, RGB_HUI, RGB_VAI, RGB_MOD,                                     KC_BRIU, _______, _______,  KC_F11,  KC_F12, CG_TOGG,
-    _______, _______, RGB_SAD, RGB_HUD, RGB_VAD,RGB_RMOD,_______, _______,  _______, _______, KC_BRID, _______, _______, _______,  QWERTY,    HNTS,
+    RESET,   _______, _______, _______, _______, _______,                                     _______, _______, _______, _______,  QWERTY,    HNTS,
+    _______, RGB_TOG, RGB_SAI, RGB_HUI, RGB_VAI, RGB_MOD,                                     _______, NK_TOGG, CG_TOGG, _______, _______, _______,
+    _______, _______, RGB_SAD, RGB_HUD, RGB_VAD,RGB_RMOD,_______, _______,  _______, _______, _______, _______, _______, _______, _______, _______,
                               _______, _______, _______, _______, _______,  _______, _______, _______, _______, _______
 ),
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-        case HNTS:  //Layer Control
-          if (record->event.pressed) {
-            set_single_persistent_default_layer(_HNTS);
-          }
-          return false;
-          break;
-        case QWERTY:
-          if (record->event.pressed) {
-            set_single_persistent_default_layer(_QWERTY);
-          }
-          return false;
-          break;
         case LOWER:
           if (record->event.pressed) {
             layer_on(_LOWER);
@@ -186,11 +176,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
               if (record->event.pressed) {
                 copy_paste_timer = timer_read();
               } else {
-                if (timer_elapsed(copy_paste_timer) > TAPPING_TERM) {  // Hold, copy
+                if (timer_elapsed(copy_paste_timer) > TAPPING_TERM) {
                   register_mods(mod_config(MOD_LGUI));
                   tap_code(KC_C);
                   unregister_mods(mod_config(MOD_LGUI));
-                } else {  // Tap, paste
+                } else {
                   register_mods(mod_config(MOD_LGUI));
                   tap_code(KC_V);
                   unregister_mods(mod_config(MOD_LGUI));
