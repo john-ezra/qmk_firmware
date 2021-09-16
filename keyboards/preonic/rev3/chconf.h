@@ -21,9 +21,10 @@
 
 #pragma once
 
+#define CH_CFG_OPTIMIZE_SPEED TRUE  //Added to increase scon rate
+
 #define CH_CFG_ST_RESOLUTION 16
 
-#define CH_CFG_ST_FREQUENCY 10000
+#define CH_CFG_ST_FREQUENCY 100000 //Changed from 10000 to increase scan rate
 
 #include_next <chconf.h>
-
