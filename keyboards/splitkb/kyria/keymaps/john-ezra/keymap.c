@@ -18,7 +18,6 @@
 
 enum kyria_layers {
   _HNTS,
-  _QWERTY,
   _LOWER,
   _RAISE,
   _ADJUST
@@ -26,7 +25,6 @@ enum kyria_layers {
 
 enum kyria_keycodes {
   HNTS = SAFE_RANGE,
-  QWERTY,
   LOWER,
   RAISE,
   CPY_PST,
@@ -40,7 +38,7 @@ enum kyria_keycodes {
 #define SFT_ENT MT(MOD_LSFT, KC_ENT)
 #define UNDO G(KC_Z)
 #define FIND G(KC_F)
-#define SHFTENT S(KC_ENT)
+#define MSS_CTL C(KC_UP)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -52,38 +50,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |-------+-------+-------+-------+-------+-------|                                  |-------+-------+-------+-------+-------+-------|
  * |Cpy/Pst|   H   |   N   |   T   |   S   |   C   |                                  |   B   |   I   |   E   |   O   |   A   |  ` ~  |
  * |-------+-------+-------+-------+-------+-------+---------------.  ,---------------+-------+-------+-------+-------+-------+-------|
- * |  Undo |   K   |   V   |   M   |   F   |   G   | Ctrl  |  Alt  |  |  Esc |  Del   |   J   |  ; :  |  , <  |  . >  |  / ?  |  ' "  |
+ * |  Undo |   K   |   V   |   M   |   F   |   G   |  Esc  |MssnCtl|  |MssnCtl|  Esc  |   J   |  ; :  |  , <  |  . >  |  / ?  |  ' "  |
  * `-------+-------+-------+-------+-------+-------+-------+-------|  |-------+-------+-------+-------+-------+-----------------------'
- *                         |  Up   | Down  | Lower | Space | BSPC  |  |  Tab  | Shift | Raise |  Left | Right |
+ *                         | Ctrl  |  Alt  | Lower | Space | BSPC  |  |  Tab  | Shift | Raise |  Del  | Caps  |
  *                         `---------------------------------------'  `---------------------------------------'
  */
 
 [_HNTS] = LAYOUT(
        FIND,    KC_Z,    KC_R,    KC_L,    KC_D,    KC_W,                                         KC_Y,    KC_P,    KC_U,    KC_X,    KC_Q, KC_BSLS,
     CPY_PST,    KC_H,    KC_N,    KC_T,    KC_S,    KC_C,                                         KC_B,    KC_I,    KC_E,    KC_O,    KC_A,  KC_GRV,
-       UNDO,    KC_K,    KC_V,    KC_M,    KC_F,    KC_G, KC_LCTL, KC_LALT,   KC_DEL, KC_CAPS,    KC_J, KC_SCLN, KC_COMM,  KC_DOT, KC_SLSH, KC_QUOT,
-                                 KC_UP, KC_DOWN,   LOWER,  KC_SPC, BSP_CMD,   KC_TAB, SFT_ENT,   RAISE, KC_LEFT, KC_RGHT
-),
-
-/*
- * Default: QWERTY
- *
- * ,-----------------------------------------------.                                  ,-----------------------------------------------.
- * |   `   |   Q   |   W   |   E   |   R   |   T   |                                  |   Y   |   U   |   I   |   O   |   P   |  | \  |
- * |-------+-------+-------+-------+-------+-------|                                  |-------+-------+-------+-------+-------+-------|
- * |  Esc  |   A   |   S   |   D   |   F   |   G   |                                  |   H   |   J   |   K   |   L   |   ;   |  ' "  |
- * |-------+-------+-------+-------+-------+-------+---------------.  ,---------------+-------+-------+-------+-------+-------+-------|
- * |Cpy/Pst|   Z   |   X   |   C   |   V   |   B   | Ctrl  |  Alt  |  |  Caps |  Del  |   N   |   M   |  , <  |  . >  |  / ?  |Cpy/Pst|
- * `-------+-------+-------+-------+-------+-------+-------+-------|  |-------+-------+-------+-------+-------+-----------------------'
- *                         |  Up   | Down  | Lower | Space | BSPC  |  |  Tab  | Shift | Raise |  Left | Right |
- *                         `---------------------------------------'  `---------------------------------------'
- */
-
-[_QWERTY] = LAYOUT(
-     KC_GRV,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, KC_BSLS,
-     KC_ESC,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                                         KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,
-    CPY_PST,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B, KC_LCTL, KC_LALT,  KC_CAPS,  KC_DEL,    KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, CPY_PST,
-                                 KC_UP, KC_DOWN,   LOWER,  KC_SPC, BSP_CMD,   KC_TAB, SFT_ENT,   RAISE, KC_LEFT, KC_RGHT
+       UNDO,    KC_K,    KC_V,    KC_M,    KC_F,    KC_G,  KC_ESC, MSS_CTL,   MSS_CTL, KC_ESC,    KC_J, KC_SCLN, KC_COMM,  KC_DOT, KC_SLSH, KC_QUOT,
+                               KC_LCTL, KC_LALT,   LOWER,  KC_SPC, BSP_CMD,   KC_TAB, SFT_ENT,   RAISE,  KC_DEL, KC_CAPS
 ),
 
 /*
@@ -96,7 +73,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |-------+-------+-------+-------+-------+-------+---------------.  ,---------------+-------+-------+-------+-------+-------+-------|
  * |  Esc  | Vol-  | Vol+  | Prev  | Play  |  Next |       |       |  |       |       |   _   |   [   |   ]   |   ^   |   %   |   &   |
  * `-------+-------+-------+-------+-------+-------+-------+-------|  |-------+-------+-------+-------+-------+-----------------------'
- *                         |Bright+|Bright-|       |       |       |  |       |Sft+Ent|       |       |       |
+ *                         |       |       |       |       |       |  |       |       |       |       |       |
  *                         `---------------------------------------'  `---------------------------------------'
  */
 
@@ -104,7 +81,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,  KC_ASTR, KC_SLSH, KC_PLUS, KC_MINS,  KC_EQL,                                      KC_PIPE, KC_LCBR, KC_RCBR,   KC_AT, KC_EXLM,  KC_GRV,
     KC_ENT,  KC_LEFT,   KC_UP, KC_DOWN, KC_RGHT, _______,                                      KC_BSLS, KC_LPRN, KC_RPRN,  KC_DLR, KC_HASH, KC_TILD,
     KC_ESC,  KC_VOLD, KC_VOLU, KC_MPRV, KC_MPLY, KC_MNXT, _______, _______,  _______, _______, KC_UNDS, KC_LBRC, KC_RBRC, KC_CIRC, KC_PERC, KC_AMPR,
-                               KC_BRIU, KC_BRID, _______, _______, _______,  _______, SHFTENT, _______, _______, _______
+                               _______, _______, _______, _______, _______,  _______, _______, _______, _______, _______
 ),
 
 /*
@@ -132,19 +109,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   * Adjust: Function Keys & RGB
   *
   * ,-----------------------------------------------.                                  ,-----------------------------------------------.
-  * | Reset |       |       |       |       |       |                                  |       |       |       | HNTS  |QWERTY |       |
+  * | Reset |       |       |       |       |       |                                  |       |  NKRO |CG SWAP|       |       | HNTS  |
   * |-------+-------+-------+-------+-------+-------|                                  |-------+-------+-------+-------+-------+-------|
-  * |       |  TOG  |  SAI  |  HUI  |  VAI  |  MOD  |                                  |       | NKRO  |OS SWAP|       |       |       |
+  * |       |  TOG  |  SAI  |  HUI  |  VAI  |  MOD  |                                  |       |       |       |       |       |       |
   * |-------+-------+-------+-------+-------+-------+---------------.  ,---------------+-------+-------+-------+-------+-------+-------|
-  * |       |       |  SAD  |  HUD  |  VAD  | RMOD  |       |       |  |       |       |       |       |       |       |       |       |
+  * |       |       |  SAD  |  HUD  |  VAD  | RMOD  |       |       |  |       |       |       |       |Bright+|Bright-|       |       |
   * `-------+-------+-------+-------+-------+-------+-------+-------|  |-------+-------+-------+-------+-------+-----------------------'
   *                         |       |       |       |       |       |  |       |       |       |       |       |
   *                         `---------------------------------------'  `---------------------------------------'
   */
 
 [_ADJUST] = LAYOUT(
-    RESET,   _______, _______, _______, _______, _______,                                     _______, _______, _______, _______,  QWERTY,    HNTS,
-    _______, RGB_TOG, RGB_SAI, RGB_HUI, RGB_VAI, RGB_MOD,                                     _______, NK_TOGG, CG_TOGG, _______, _______, _______,
+    RESET,   _______, _______, _______, _______, _______,                                     _______, _______, _______, _______, _______,    HNTS,
+    _______, RGB_TOG, RGB_SAI, RGB_HUI, RGB_VAI, RGB_MOD,                                     CG_TOGG, NK_TOGG, KC_BRID, KC_BRIU, _______, _______,
     _______, _______, RGB_SAD, RGB_HUD, RGB_VAD,RGB_RMOD,_______, _______,  _______, _______, _______, _______, _______, _______, _______, _______,
                               _______, _______, _______, _______, _______,  _______, _______, _______, _______, _______
 ),
@@ -172,7 +149,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
-    case CPY_PST:
+    case CPY_PST:  // Hold to Copy, Hold with GUI to Cut, Tap to Paste
       {
       static uint16_t copy_paste_timer;
         if (record->event.pressed) {
@@ -190,7 +167,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
       }
       break;
-    case UNDO:
+    case UNDO:  // Tap to Undo, Tap with GUI to Redo
       if (get_mods() & MOD_MASK_GUI) {
         if (record->event.pressed) {
           tap_code(KC_Y);
@@ -198,7 +175,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
       }
       break;
-    case FIND:
+    case FIND:  // Tap to Find, Tap with GUI to Select All
       if (get_mods() & MOD_MASK_GUI) {
         if (record->event.pressed) {
           tap_code(KC_A);
@@ -208,4 +185,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     }
   return true;
+};
+
+const key_override_t ctrl_h = ko_make_basic(MOD_MASK_CTRL, KC_H, C(KC_LEFT)); //MocOS Desktop Navigation
+const key_override_t ctrl_n = ko_make_basic(MOD_MASK_CTRL, KC_N, C(KC_UP));  //MocOS Desktop Navigation
+const key_override_t ctrl_t = ko_make_basic(MOD_MASK_CTRL, KC_T, C(KC_DOWN));  //MocOS Desktop Navigation
+const key_override_t ctrl_s = ko_make_basic(MOD_MASK_CTRL, KC_S, C(KC_RGHT));  //MocOS Desktop Navigation
+const key_override_t bsp_del = ko_make_basic(MOD_MASK_SHIFT, BSP_CMD, KC_DEL);  //  Shift+Bksp sends Delete
+
+const key_override_t **key_overrides = (const key_override_t *[]){
+    &ctrl_h,
+    &ctrl_n,
+    &ctrl_t,
+    &ctrl_s,
+    &bsp_del,
+    NULL
 };
