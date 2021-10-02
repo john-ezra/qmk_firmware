@@ -1,11 +1,12 @@
-######This Keymap uses the nanoBoot bootloader to maximize available firmware space.
+### This Keymap uses the nanoBoot bootloader to maximize available firmware space.
 
 As is, the firmware will be too large if using the standard bootloader.  Removing `DEBOUNCE_TYPE = sym_eager_pk` from the `rules.mk` should get the size under the limit.
 
 If nanoBoot is not going to be used, delete or comment out the following from your `rules.mk`:
-```BOOTLOADER = hid           # This Keymap Uses nanoBoot, more info in readme
+```BOOTLOADER = hid        
 BOOTLOADER_SIZE = 512
-PROGRAM_CMD = 	$(HID_BOOTLOADER_CLI) -mmcu=$(MCU) -w -v $(BUILD_DIR)/$(TARGET).hex```
+PROGRAM_CMD = 	$(HID_BOOTLOADER_CLI) -mmcu=$(MCU) -w -v $(BUILD_DIR)/$(TARGET).hex
+```
 
 nanoBoot can be found here: [nanoBoot](https://github.com/sigprof/nanoBoot) I used the string-descriptors branch as it was the latest update.
 
