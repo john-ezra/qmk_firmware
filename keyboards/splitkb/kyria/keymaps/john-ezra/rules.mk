@@ -12,7 +12,7 @@ CONSOLE_ENABLE = no
 
 DEBOUNCE_TYPE = sym_eager_pk
 
-BOOTLOADER = hid           # This Keymap Uses nanoBoot
+BOOTLOADER = hid           # This Keymap Uses nanoBoot, more info in readme
 BOOTLOADER_SIZE = 512
 PROGRAM_CMD = 	$(HID_BOOTLOADER_CLI) -mmcu=$(MCU) -w -v $(BUILD_DIR)/$(TARGET).hex
 
