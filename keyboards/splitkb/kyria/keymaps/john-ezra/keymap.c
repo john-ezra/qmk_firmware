@@ -29,16 +29,14 @@ enum kyria_keycodes {
   HNTS = SAFE_RANGE,
   ESC_NUM,
   LOWER,
-  RAISE,
-  MSS_CTL,
-  CPY_PST,
-  UNDO,
-  FIND
+  RAISE
 };
 
 #define HNTS DF(_HNTS)
 #define GAME TG(_GAME)
 #define NUMPAD TG(_NUMPAD)
+#define CPY_PST MT(KC_C,KC_V)
+#define FIND MT(KC_A,KC_F)
 #define MSS_CTL MT(MOD_LCTL, C(KC_UP))
 #define BSP_CMD MT(MOD_LGUI, KC_BSPC)
 #define TAB_CMD MT(MOD_LGUI, KC_TAB)
@@ -46,7 +44,6 @@ enum kyria_keycodes {
 #define ALT_ESC MT(MOD_LALT, KC_ESC)
 #define ALT_TAB A(KC_TAB)
 #define UNDO G(KC_Z)
-#define FIND G(KC_F)
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -202,22 +199,26 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
       break;
     case CPY_PST:  // Hold to Copy, Hold with GUI to Cut, Tap to Paste
-      {
-      static uint16_t copy_paste_timer;
+      if (get_mods() & MOD_MASK_GUI) {
         if (record->event.pressed) {
-          copy_paste_timer = timer_read();
-        } else {
-           if (timer_elapsed(copy_paste_timer) > TAPPING_TERM) {
-             if (get_mods() & MOD_MASK_GUI) {
-               tap_code16(LGUI(KC_X));
-             } else {
-               tap_code16(LGUI(KC_C));
-             }
-           } else {
-             tap_code16(LGUI(KC_V));
-           }
+          tap_code16(G(KC_X)); // Intercept hold function to send Cut
+        }
+      } else {
+        if (record->tap.count && record->event.pressed) {
+          tap_code16(G(KC_V)); // Intercept tap function to send Paste
+        } else if (record->event.pressed) {
+          tap_code16(G(KC_C)); // Intercept hold function to send Copy
         }
       }
+      return false;
+      break;
+    case FIND:  // Tap to Find, Hold to Select All
+      if (record->tap.count && record->event.pressed) {
+        tap_code16(G(KC_F)); // Intercept tap function to send Find
+      } else if (record->event.pressed) {
+        tap_code16(G(KC_A)); // Intercept hold function to send All
+      }
+      return false;
       break;
     case MSS_CTL:
       if (record->event.pressed && record->tap.count) {
@@ -229,14 +230,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (get_mods() & MOD_MASK_GUI) {
         if (record->event.pressed) {
           tap_code(KC_Y);
-        }
-        return false;
-      }
-      break;
-    case FIND:  // Tap to Find, Tap with GUI to Select All
-      if (get_mods() & MOD_MASK_GUI) {
-        if (record->event.pressed) {
-          tap_code(KC_A);
         }
         return false;
       }

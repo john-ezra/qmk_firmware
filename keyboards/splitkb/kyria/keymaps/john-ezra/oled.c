@@ -38,6 +38,22 @@ int graph_line_thickness = 2; //determines thickness of graph line in pixels
 		return OLED_ROTATION_180;
 }
 
+// Loop to create line by line rendering for Horizontal display
+// Input is oled_render_image(how many rows tall, how many pixels wide, what to render, X pos, Y pos, Frame offset)
+void oled_render_image(int lines, int px, const char render_line[][px], int X_pos, int Y_pos) {
+	for (uint8_t i = 0; i < lines; i++){
+		oled_set_cursor(X_pos, Y_pos + i);
+		oled_write_raw_P(render_line[i], px);
+	}
+}
+
+void oled_render_icon(int lines, int px, const char render_line[][px], int X_pos, int Y_pos) {
+	for (uint8_t i = 0; i < lines; i++){
+		oled_set_cursor(X_pos, Y_pos + i);
+		oled_write_P(render_line[i], false);
+	}
+}
+
 static void render_qmk_logo(void) {
 	static const char PROGMEM qmk_logo[] = {
 		0x00, 0x00, 0x00, 0x00, 0xc0, 0xe0, 0xf0, 0x70, 0x70, 0x7e, 0xf0, 0xf0, 0xfe, 0xf0, 0x70, 0x7e,
@@ -74,15 +90,6 @@ static void render_qmk_logo(void) {
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 		};
 		oled_write_raw_P(qmk_logo, sizeof(qmk_logo));
-}
-
-// Loop to create line by line rendering for Horizontal display
-// Input is oled_render_image(how many rows tall, how many pixels wide, what to render, X pos, Y pos, Frame offset)
-void oled_render_image(int lines, int px, const char render_line[][px], int X_pos, int Y_pos, int frame) {
-	for (uint8_t i = 0; i < lines; i++){
-		oled_set_cursor(X_pos, Y_pos + i);
-		oled_write_raw_P(render_line[i + frame], px);
-	}
 }
 
 static void render_layers(void) {
@@ -152,26 +159,26 @@ static void render_layers(void) {
 
 	switch (get_highest_layer(layer_state)) {
 		case 0:
-			oled_render_image(1, 38, layer_background_r1, 15, 4, 0);
-			oled_render_image(1, 38, layer_background_r2, 15, 5, 0);
-			oled_render_image(1, 38, base, 15, 6, 0);
-			oled_render_image(1, 38, layer_background_r4, 15, 7, 0);
+			oled_render_image(1, 38, layer_background_r1, 15, 4);
+			oled_render_image(1, 38, layer_background_r2, 15, 5);
+			oled_render_image(1, 38, base, 15, 6);
+			oled_render_image(1, 38, layer_background_r4, 15, 7);
 		break;
 		case 3:
-			oled_render_image(2, 38, lower, 15, 6, 0);
+			oled_render_image(2, 38, lower, 15, 6);
 		break;
 		case 4:
-			oled_render_image(1, 38, layer_background_r1, 15, 4, 0);
-			oled_render_image(2, 38, raise, 15, 5, 0);
-			oled_render_image(1, 38, layer_background_r4, 15, 7, 0);
+			oled_render_image(1, 38, layer_background_r1, 15, 4);
+			oled_render_image(2, 38, raise, 15, 5);
+			oled_render_image(1, 38, layer_background_r4, 15, 7);
 		break;
 		case 5:
-			oled_render_image(2, 38, adjust, 15, 4, 0);
-			oled_render_image(1, 38, layer_background_r3, 15, 6, 0);
-			oled_render_image(1, 38, layer_background_r4, 15, 7, 0);
+			oled_render_image(2, 38, adjust, 15, 4);
+			oled_render_image(1, 38, layer_background_r3, 15, 6);
+			oled_render_image(1, 38, layer_background_r4, 15, 7);
 		break;
 		default:
-			oled_render_image(4, 38, custom, 15, 4, 0);
+			oled_render_image(4, 38, custom, 15, 4);
 		break;
 	}
 }
@@ -186,104 +193,25 @@ void render_mod_state(uint8_t modifiers) {
 	static const char PROGMEM shift_off [][3]= {{0x86, 0x87, 0}, {0xa6, 0xa7, 0}};
 	static const char PROGMEM shift_on [][3]= {{0xc6, 0xc7, 0}, {0xe6, 0xe7, 0}};
 
-	// fillers between the modifier icons bleed into the icon frames
-
-	static const char PROGMEM off_off [][2]= {{0x9e, 0}, {0xbe, 0}};
-	static const char PROGMEM on_on [][2]= {{0xdf, 0}, {0xff, 0}};
-	static const char PROGMEM on_off [][2]= {{0xde, 0}, {0xfe, 0}};
-	static const char PROGMEM off_on [][2]= {{0x9f, 0}, {0xbf, 0}};
-
-	// render icons
-
 	if(modifiers & MOD_MASK_GUI) {
-		oled_set_cursor(0, 4);
-		oled_write_P(gui_on[0], false);
-		oled_set_cursor(0, 5);
-		oled_write_P(gui_on[1], false);
+		oled_render_icon(2, 3, gui_on, 0, 4);
 	} else {
-		oled_set_cursor(0, 4);
-		oled_write_P(gui_off[0], false);
-		oled_set_cursor(0, 5);
-		oled_write_P(gui_off[1], false);
+		oled_render_icon(2, 3, gui_off, 0, 4);
 	}
 	if(modifiers & MOD_MASK_ALT) {
-		oled_set_cursor(3, 4);
-		oled_write_P(alt_on[0], false);
-		oled_set_cursor(3, 5);
-		oled_write_P(alt_on[1], false);
+		oled_render_icon(2, 3, alt_on, 3, 4);
 	} else {
-		oled_set_cursor(3, 4);
-		oled_write_P(alt_off[0], false);
-		oled_set_cursor(3, 5);
-		oled_write_P(alt_off[1], false);
+		oled_render_icon(2, 3, alt_off, 3, 4);
 	}
 	if(modifiers & MOD_MASK_CTRL) {
-		oled_set_cursor(0, 6);
-		oled_write_P(ctrl_on[0], false);
-		oled_set_cursor(0, 7);
-		oled_write_P(ctrl_on[1], false);
+		oled_render_icon(2, 3, ctrl_on, 0, 6);
 	} else {
-		oled_set_cursor(0, 6);
-		oled_write_P(ctrl_off[0], false);
-		oled_set_cursor(0, 7);
-		oled_write_P(ctrl_off[1], false);
+		oled_render_icon(2, 3, ctrl_off, 0, 6);
 	}
 	if(modifiers & MOD_MASK_SHIFT) {
-		oled_set_cursor(3, 6);
-		oled_write_P(shift_on[0], false);
-		oled_set_cursor(3, 7);
-		oled_write_P(shift_on[1], false);
+		oled_render_icon(2, 3, shift_on, 3, 6);
 	} else {
-		oled_set_cursor(3, 6);
-		oled_write_P(shift_off[0], false);
-		oled_set_cursor(3, 7);
-		oled_write_P(shift_off[1], false);
-	}
-
-	// render fillers
-
-	if ((modifiers & MOD_MASK_GUI) && (modifiers & MOD_MASK_ALT)) {
-		oled_set_cursor(2, 4);
-		oled_write_P(on_on[0], false);
-		oled_set_cursor(2, 5);
-		oled_write_P(on_on[1], false);
-	} else if(modifiers & MOD_MASK_GUI) {
-		oled_set_cursor(2, 4);
-		oled_write_P(on_off[0], false);
-		oled_set_cursor(2, 5);
-		oled_write_P(on_off[1], false);
-	} else if(modifiers & MOD_MASK_ALT) {
-		oled_set_cursor(2, 4);
-		oled_write_P(off_on[0], false);
-		oled_set_cursor(2, 5);
-		oled_write_P(off_on[1], false);
-	} else {
-		oled_set_cursor(2, 4);
-		oled_write_P(off_off[0], false);
-		oled_set_cursor(2, 5);
-		oled_write_P(off_off[1], false);
-	}
-
-	if ((modifiers & MOD_MASK_CTRL) && (modifiers & MOD_MASK_SHIFT)) {
-		oled_set_cursor(2, 6);
-		oled_write_P(on_on[0], false);
-		oled_set_cursor(2, 7);
-		oled_write_P(on_on[1], false);
-	} else if(modifiers & MOD_MASK_CTRL) {
-		oled_set_cursor(2, 6);
-		oled_write_P(on_off[0], false);
-		oled_set_cursor(2, 7);
-		oled_write_P(on_off[1], false);
-	} else if(modifiers & MOD_MASK_SHIFT) {
-		oled_set_cursor(2, 6);
-		oled_write_P(off_on[0], false);
-		oled_set_cursor(2, 7);
-		oled_write_P(off_on[1], false);
-	} else {
-		oled_set_cursor(2, 6);
-		oled_write_P(off_off[0], false);
-		oled_set_cursor(2, 7);
-		oled_write_P(off_off[1], false);
+		oled_render_icon(2, 3, shift_off, 3, 6);
 	}
 }
 
@@ -296,34 +224,16 @@ void render_bootmagic_status(void) {
 	static const char PROGMEM windows_on [][6]= {{0xd5, 0xd6, 0xd7, 0xd8, 0xd9, 0}, {0xf5, 0xf6, 0xf7, 0xf8, 0xf9, 0}};
 
 	if (keymap_config.nkro) {
-		oled_set_cursor(5, 4);
-		oled_write_P(nkro_on[0], false);
-		oled_set_cursor(5, 5);
-		oled_write_P(nkro_on[1], false);
+		oled_render_icon(2, 3, nkro_on, 5, 4);
 	}	else {
-		oled_set_cursor(5, 4);
-		oled_write_P(nkro_off[0], false);
-		oled_set_cursor(5, 5);
-		oled_write_P(nkro_off[1], false);
+		oled_render_icon(2, 3, nkro_off, 5, 4);
 	}
 	if (keymap_config.swap_lctl_lgui) {
-		oled_set_cursor(10, 6);
-		oled_write_P(windows_on[0], false);
-		oled_set_cursor(10, 7);
-		oled_write_P(windows_on[1], false);
-		oled_set_cursor(10, 4);
-		oled_write_P(mac_os_off[0], false);
-		oled_set_cursor(10, 5);
-		oled_write_P(mac_os_off[1], false);
+		oled_render_icon(2, 6, windows_on, 10, 6);
+		oled_render_icon(2, 6, mac_os_off, 10, 4);
 	}	else {
-		oled_set_cursor(10, 4);
-		oled_write_P(mac_os_on[0], false);
-		oled_set_cursor(10, 5);
-		oled_write_P(mac_os_on[1], false);
-		oled_set_cursor(10, 6);
-		oled_write_P(windows_off[0], false);
-		oled_set_cursor(10, 7);
-		oled_write_P(windows_off[1], false);
+		oled_render_icon(2, 6, windows_off, 10, 6);
+		oled_render_icon(2, 6, mac_os_on, 10, 4);
 	}
 }
 
@@ -335,93 +245,69 @@ void render_lock_status(void) {
 	static const char PROGMEM scrl_off [][3]= {{0x8e, 0x8f, 0}, {0xae, 0xaf, 0}};
 	static const char PROGMEM scrl_on [][3]= {{0xce, 0xcf, 0}, {0xee, 0xef, 0}};
 
+	led_t led_usb_state = host_keyboard_led_state();
+	if (led_usb_state.caps_lock) {
+	oled_render_icon(2, 3, caps_on, 8, 4);
+	}	else {
+	oled_render_icon(2, 3, caps_off, 8, 4);
+	}
+	if (led_usb_state.num_lock) {
+	oled_render_icon(2, 3, num_on, 5, 6);
+	}	else {
+	oled_render_icon(2, 3, num_off, 5, 6);
+	}
+	if (led_usb_state.scroll_lock) {
+	oled_render_icon(2, 3, scrl_on, 8, 6);
+	}	else {
+	oled_render_icon(2, 3, scrl_off, 8, 6);
+	}
+}
+
+void render_fillers(uint8_t modifiers) {
 	static const char PROGMEM off_off [][2]= {{0x9e, 0}, {0xbe, 0}};
 	static const char PROGMEM on_on [][2]= {{0xdf, 0}, {0xff, 0}};
 	static const char PROGMEM on_off [][2]= {{0xde, 0}, {0xfe, 0}};
 	static const char PROGMEM off_on [][2]= {{0x9f, 0}, {0xbf, 0}};
 
 	led_t led_usb_state = host_keyboard_led_state();
-	if (led_usb_state.caps_lock) {
-	oled_set_cursor(8, 4);
-	oled_write_P(caps_on[0], false);
-	oled_set_cursor(8, 5);
-	oled_write_P(caps_on[1], false);
-	}	else {
-	oled_set_cursor(8, 4);
-	oled_write_P(caps_off[0], false);
-	oled_set_cursor(8, 5);
-	oled_write_P(caps_off[1], false);
-	}
-	if (led_usb_state.num_lock) {
-	oled_set_cursor(5, 6);
-	oled_write_P(num_on[0], false);
-	oled_set_cursor(5, 7);
-	oled_write_P(num_on[1], false);
-	}	else {
-	oled_set_cursor(5, 6);
-	oled_write_P(num_off[0], false);
-	oled_set_cursor(5, 7);
-	oled_write_P(num_off[1], false);
-	}
-	if (led_usb_state.scroll_lock) {
-	oled_set_cursor(8, 6);
-	oled_write_P(scrl_on[0], false);
-	oled_set_cursor(8, 7);
-	oled_write_P(scrl_on[1], false);
-	}	else {
-	oled_set_cursor(8, 6);
-	oled_write_P(scrl_off[0], false);
-	oled_set_cursor(8, 7);
-	oled_write_P(scrl_off[1], false);
-	}
 
-	// render fillers
-
-	if ((led_usb_state.caps_lock) && (keymap_config.nkro)) {
-		oled_set_cursor(7, 4);
-		oled_write_P(on_on[0], false);
-		oled_set_cursor(7, 5);
-		oled_write_P(on_on[1], false);
-	} else if(keymap_config.nkro) {
-		oled_set_cursor(7, 4);
-		oled_write_P(on_off[0], false);
-		oled_set_cursor(7, 5);
-		oled_write_P(on_off[1], false);
-	} else if(led_usb_state.caps_lock) {
-		oled_set_cursor(7, 4);
-		oled_write_P(off_on[0], false);
-		oled_set_cursor(7, 5);
-		oled_write_P(off_on[1], false);
+	if ((modifiers & MOD_MASK_GUI) && (modifiers & MOD_MASK_ALT)) {
+		oled_render_icon(2, 2, on_on, 2, 4);
+	} else if(modifiers & MOD_MASK_GUI) {
+		oled_render_icon(2, 2, on_off, 2, 4);
+	} else if(modifiers & MOD_MASK_ALT) {
+		oled_render_icon(2, 2, off_on, 2, 4);
 	} else {
-		oled_set_cursor(7, 4);
-		oled_write_P(off_off[0], false);
-		oled_set_cursor(7, 5);
-		oled_write_P(off_off[1], false);
+		oled_render_icon(2, 2, off_off, 2, 4);
+	}
+	if ((modifiers & MOD_MASK_CTRL) && (modifiers & MOD_MASK_SHIFT)) {
+		oled_render_icon(2, 2, on_on, 2, 6);
+	} else if(modifiers & MOD_MASK_CTRL) {
+		oled_render_icon(2, 2, on_off, 2, 6);
+	} else if(modifiers & MOD_MASK_SHIFT) {
+		oled_render_icon(2, 2, off_on, 2, 6);
+	} else {
+		oled_render_icon(2, 2, off_off, 2, 6);
+	}
+	if ((led_usb_state.caps_lock) && (keymap_config.nkro)) {
+		oled_render_icon(2, 2, on_on, 7, 4);
+	} else if(keymap_config.nkro) {
+		oled_render_icon(2, 2, on_off, 7, 4);
+	} else if(led_usb_state.caps_lock) {
+		oled_render_icon(2, 2, off_on, 7, 4);
+	} else {
+		oled_render_icon(2, 2, off_off, 7, 4);
 	}
 	if ((led_usb_state.num_lock) && (led_usb_state.scroll_lock)) {
-		oled_set_cursor(7, 6);
-		oled_write_P(on_on[0], false);
-		oled_set_cursor(7, 7);
-		oled_write_P(on_on[1], false);
+		oled_render_icon(2, 2, on_on, 7, 6);
 	} else if(led_usb_state.num_lock) {
-		oled_set_cursor(7, 6);
-		oled_write_P(on_off[0], false);
-		oled_set_cursor(7, 7);
-		oled_write_P(on_off[1], false);
+		oled_render_icon(2, 2, on_off, 7, 6);
 	} else if(led_usb_state.scroll_lock) {
-		oled_set_cursor(7, 6);
-		oled_write_P(off_on[0], false);
-		oled_set_cursor(7, 7);
-		oled_write_P(off_on[1], false);
+		oled_render_icon(2, 2, off_on, 7, 6);
 	} else {
-		oled_set_cursor(7, 6);
-		oled_write_P(off_off[0], false);
-		oled_set_cursor(7, 7);
-		oled_write_P(off_off[1], false);
+		oled_render_icon(2, 2, off_off, 7, 6);
 	}
 }
-
-
 
 void render_wpm_graph(void) {
 	currwpm = get_current_wpm();  //get current WPM value
@@ -471,6 +357,7 @@ void render_status_main(void) {
 	render_mod_state(get_mods());
 	render_bootmagic_status();
 	render_lock_status();
+	render_fillers(get_mods());
 
 }
 
