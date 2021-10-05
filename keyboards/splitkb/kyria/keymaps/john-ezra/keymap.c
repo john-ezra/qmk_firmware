@@ -202,30 +202,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case CPY_PST:  // Hold to Copy, Hold with GUI to Cut, Tap to Paste
       if (get_mods() & MOD_MASK_GUI) {
         if (record->event.pressed) {
-          tap_code16(G(KC_X)); // Intercept hold function to send Cut
+          keymap_config.swap_lctl_lgui ? tap_code16(C(KC_X)) : tap_code16(G(KC_X)); // Intercept hold function to send Cut
         }
       } else {
         if (record->tap.count && record->event.pressed) {
-          tap_code16(G(KC_V)); // Intercept tap function to send Paste
+          keymap_config.swap_lctl_lgui ? tap_code16(C(KC_V)) : tap_code16(G(KC_V)); // Intercept tap function to send Paste
         } else if (record->event.pressed) {
-          tap_code16(G(KC_C)); // Intercept hold function to send Copy
+          keymap_config.swap_lctl_lgui ? tap_code16(C(KC_C)) : tap_code16(G(KC_C)); // Intercept hold function to send Copy
         }
       }
       return false;
       break;
     case FIND:  // Tap to Find, Hold to Select All
       if (record->tap.count && record->event.pressed) {
-        tap_code16(G(KC_F)); // Intercept tap function to send Find
+        keymap_config.swap_lctl_lgui ? tap_code16(C(KC_F)) : tap_code16(G(KC_F)); // Intercept tap function to send Find
       } else if (record->event.pressed) {
-        tap_code16(G(KC_A)); // Intercept hold function to send All
+        keymap_config.swap_lctl_lgui ? tap_code16(C(KC_A)) : tap_code16(G(KC_A)); // Intercept hold function to send All
       }
       return false;
-      break;
-    case MSS_CTL:
-      if (record->event.pressed && record->tap.count) {
-          tap_code16(C(KC_UP));
-          return false;
-      }
       break;
     case UNDO:  // Tap to Undo, Tap with GUI to Redo
       if (get_mods() & MOD_MASK_GUI) {
@@ -233,6 +227,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           tap_code(KC_Y);
         }
         return false;
+      }
+      break;
+    case MSS_CTL:
+      if (record->event.pressed && record->tap.count) {
+          tap_code16(C(KC_UP));
+          return false;
       }
       break;
     }
