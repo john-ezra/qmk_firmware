@@ -13,7 +13,6 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-//test
 
 #include QMK_KEYBOARD_H
 
@@ -30,7 +29,8 @@ enum kyria_keycodes {
   HNTS = SAFE_RANGE,
   ESC_NUM,
   LOWER,
-  RAISE
+  RAISE,
+  UNDO
 };
 
 #define HNTS DF(_HNTS)
@@ -44,7 +44,6 @@ enum kyria_keycodes {
 #define SFT_ENT MT(MOD_LSFT, KC_ENT)
 #define ALT_ESC MT(MOD_LALT, KC_ESC)
 #define ALT_TAB A(KC_TAB)
-#define UNDO G(KC_Z)
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -200,7 +199,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
       break;
     case CPY_PST:  // Hold to Copy, Hold with GUI to Cut, Tap to Paste
-      if (get_mods() & MOD_MASK_GUI) {
+      if (get_mods() & MOD_MASK_CG) {
         if (record->event.pressed) {
           keymap_config.swap_lctl_lgui ? tap_code16(C(KC_X)) : tap_code16(G(KC_X)); // Intercept hold function to send Cut
         }
@@ -222,12 +221,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
       break;
     case UNDO:  // Tap to Undo, Tap with GUI to Redo
-      if (get_mods() & MOD_MASK_GUI) {
-        if (record->event.pressed) {
-          tap_code(KC_Y);
+      if (record->event.pressed) {
+        if (get_mods() & MOD_MASK_CG) {
+          keymap_config.swap_lctl_lgui ? tap_code16(C(KC_Y)) : tap_code16(G(KC_Y));
+        } else {
+          keymap_config.swap_lctl_lgui ? tap_code16(C(KC_Z)) : tap_code16(G(KC_Z));
         }
-        return false;
       }
+      return false;
       break;
     case MSS_CTL:
       if (record->event.pressed && record->tap.count) {
