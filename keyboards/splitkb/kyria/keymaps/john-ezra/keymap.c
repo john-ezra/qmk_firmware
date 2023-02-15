@@ -33,7 +33,11 @@ enum kyria_keycodes {
   MSS_CTL,
   CPY_PST,
   UNDO,
-  FIND
+  FIND,
+  TS_LEFT,
+  TS_RGHT,
+  TS_FRWD,
+  TS_BACK
 };
 
 #define HNTS DF(_HNTS)
@@ -87,8 +91,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 
 [_GAME] = LAYOUT(
-       KC_0,    KC_Z,    KC_R,    KC_L,    KC_D,    KC_W,                                         KC_Y,    KC_P,    KC_U,    KC_X,    KC_Q,  KC_ESC,
-       KC_1,    KC_H,    KC_N,    KC_T,    KC_S,    KC_C,                                         KC_B,    KC_I,    KC_E,    KC_O,    KC_A,  KC_ENT,
+       KC_0,    KC_Z,    KC_R,    TS_FRWD, KC_D,    KC_W,                                         KC_Y,    KC_P,    KC_U,    KC_X,    KC_Q,  KC_ESC,
+       KC_1,    KC_H,    TS_LEFT, TS_BACK, TS_RGHT, KC_C,                                         KC_B,    KC_I,    KC_E,    KC_O,    KC_A,  KC_ENT,
        KC_2,    KC_K,    KC_V,    KC_M,    KC_F,    KC_G,    KC_8,    KC_9,      GAME, ALT_ESC,   KC_J, KC_SCLN, KC_COMM,  KC_DOT, KC_SLSH, ALT_TAB,
                                   KC_3,    KC_4,    KC_5,    KC_6,    KC_7,   TAB_CMD, SFT_ENT,  RAISE,  KC_DEL, KC_CAPS
 ),
@@ -239,6 +243,74 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           tap_code(KC_A);
         }
         return false;
+      }
+      break;
+    case TS_LEFT:
+      {
+      static uint16_t ts_timer;
+        if (record->event.pressed) {
+          register_code(KC_N);
+          ts_timer = timer_read();
+        } else {            
+            if (timer_elapsed(ts_timer) > 80) {
+              unregister_code(KC_N);
+              tap_code_delay(KC_RGHT, 80);
+            } else {
+              unregister_code(KC_N);
+            }
+          return false;
+        }
+      }
+      break;
+    case TS_RGHT:
+      {
+      static uint16_t ts_timer;
+        if (record->event.pressed) {
+          register_code(KC_S);
+          ts_timer = timer_read();
+        } else {            
+            if (timer_elapsed(ts_timer) > 80) {
+              unregister_code(KC_S);
+              tap_code_delay(KC_LEFT, 80);
+            } else {
+              unregister_code(KC_S);
+            }
+          return false;
+        }
+      }
+      break;
+    case TS_FRWD:
+      {
+      static uint16_t ts_timer;
+        if (record->event.pressed) {
+          register_code(KC_L);
+          ts_timer = timer_read();
+        } else {            
+            if (timer_elapsed(ts_timer) > 80) {
+              unregister_code(KC_L);
+              tap_code_delay(KC_DOWN, 80);
+            } else {
+              unregister_code(KC_L);
+            }
+          return false;
+        }
+      }
+      break;
+    case TS_BACK:
+      {
+      static uint16_t ts_timer;
+        if (record->event.pressed) {
+          register_code(KC_T);
+          ts_timer = timer_read();
+        } else {            
+            if (timer_elapsed(ts_timer) > 80) {
+              unregister_code(KC_T);
+              tap_code_delay(KC_UP, 80);
+            } else {
+              unregister_code(KC_T);
+            }
+          return false;
+        }
       }
       break;
     }
