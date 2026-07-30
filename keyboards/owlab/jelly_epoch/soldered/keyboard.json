@@ -44,7 +44,7 @@
     "ws2812": {
         "pin": "B15"
     },
-    "processor": "STM32F303",
+    "processor": "STM32F072",
     "bootloader": "stm32-dfu",
     "layouts": {
         "LAYOUT_all": {
