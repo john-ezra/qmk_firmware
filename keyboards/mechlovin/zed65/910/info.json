@@ -2,10 +2,8 @@
     "manufacturer": "Mechlovin Studio",
     "url": "https://mechlovin.studio/", 
     "maintainer": "mechlovin",
-    "keyboard_name": "Zed65 910 Rev1",
     "usb": {
         "vid": "0x4D4C",
-        "pid": "0x6505",
         "device_version": "0.0.1"
     },
     "features": {
@@ -27,7 +25,6 @@
     },
     "diode_direction": "COL2ROW",
     "rgblight": {
-        "led_count": 4,
         "sleep": true,
         "animations": {
             "alternating": true,

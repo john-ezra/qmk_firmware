@@ -545,6 +545,9 @@
     "mechlovin/hex4b": {
         "target": "mechlovin/hex4b/rev1"
     },
+    "mechlovin/zed65/910": {
+        "target": "mechlovin/zed65/910/rev1"
+    },
     "melgeek/z70ultra": {
         "target": "melgeek/z70ultra/rev1"
     },

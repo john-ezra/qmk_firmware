@@ -1,4 +1,4 @@
-# Matrix Diagram for Mechlovin Studio Zed65 910 Rev1
+# Matrix Diagram for Mechlovin Studio Zed65 910
 
 ```
                                                     ┌───────┐

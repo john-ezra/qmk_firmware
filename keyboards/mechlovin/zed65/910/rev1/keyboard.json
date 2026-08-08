@@ -1,0 +1,9 @@
+{
+    "keyboard_name": "Zed65 910 Rev1",
+    "usb": {
+        "pid": "0x6505"
+    },
+    "rgblight": {
+        "led_count": 4
+    }
+}
