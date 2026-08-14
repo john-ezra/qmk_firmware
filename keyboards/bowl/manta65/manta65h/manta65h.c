@@ -16,12 +16,13 @@
 
 #include "quantum.h"
 
-static const rgblight_segment_t PROGMEM caps_lock_layer[] = RGBLIGHT_LAYER_SEGMENTS({1, 1, HSV_WHITE});
+static const rgblight_segment_t PROGMEM caps_lock_layer[] = RGBLIGHT_LAYER_SEGMENTS({0, 2, HSV_WHITE});
 
 static const rgblight_segment_t *const PROGMEM rgb_layers[] = RGBLIGHT_LAYERS_LIST(caps_lock_layer);
 
 void keyboard_post_init_kb(void) {
     rgblight_layers = rgb_layers;
+    rgblight_disable_noeeprom();
     keyboard_post_init_user();
 }
 
