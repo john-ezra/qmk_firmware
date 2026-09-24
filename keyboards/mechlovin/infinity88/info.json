@@ -1,34 +1,20 @@
 {
-    "keyboard_name": "Infinity 88",
     "manufacturer": "Team.Mechlovin",
     "maintainer": "mechlovin",
     "usb": {
         "vid": "0x4D4C",
-        "pid": "0x8802",
-        "device_version": "0.0.1"
+        "pid": "0x8802"
     },
     "features": {
         "backlight": true,
         "bootmagic": true,
-        "command": true,
-        "console": true,
         "extrakey": true,
         "mousekey": true,
         "nkro": true,
         "rgblight": true
     },
-    "matrix_pins": {
-        "cols": ["C13", "B9", "B4", "B7", "B8", "B5", "B6", "A9", "A5", "A6", "A7", "B1", "B2", "B10", "B3", "B14", "B15"],
-        "rows": ["A10", "B13", "B12", "B11", "C14", "C15"]
-    },
-    "diode_direction": "COL2ROW",
     "backlight": {
-        "pin": "B0",
         "breathing": true
-    },
-    "indicators": {
-        "caps_lock": "A4",
-        "num_lock": "A3"
     },
     "rgblight": {
         "led_count": 26,
@@ -46,12 +32,6 @@
             "twinkle": true
         }
     },
-    "ws2812": {
-        "pin": "A15"
-    },
-    "processor": "STM32F303",
-    "bootloader": "stm32-dfu",
-    "board": "QMK_PROTON_C",
     "community_layouts": ["tkl_f13_ansi", "tkl_f13_iso"],
     "layouts": {
         "LAYOUT_all": {

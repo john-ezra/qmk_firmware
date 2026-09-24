@@ -1,0 +1,25 @@
+{
+    "keyboard_name": "Infinity 88 Rev2",
+    "usb": {
+        "device_version": "0.0.2"
+    },
+    "matrix_pins": {
+        "custom_lite": true,
+        "cols": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+        "rows": ["D5", "D2", "D4", "D3", "D0", "D1"]
+    },
+    "diode_direction": "ROW2COL",
+    "backlight": {
+        "pin": "B6"
+    },
+    "indicators": {
+        "caps_lock": "D6",
+        "num_lock": "D7",
+        "scroll_lock": "B4"
+    },
+    "ws2812": {
+        "pin": "E2"
+    },
+    "processor": "atmega32u4",
+    "bootloader": "atmel-dfu"
+}
