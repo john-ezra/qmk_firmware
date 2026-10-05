@@ -2049,6 +2049,9 @@
     "mechlovin/zed1800": {
         "target": "mechlovin/zed1800/saber"
     },
+    "mechlovin/zed60": {
+        "target": "mechlovin/zed60/rev1"
+    },
     "mechlovin/zed65/no_backlight": {
         "target": "mechlovin/zed65/no_backlight/wearhaus66"
     },
