@@ -1,0 +1,16 @@
+{
+    "manufacturer": "Mechlovin.Studio",
+    "maintainer": "Mechlovin' Studio",
+    "bootloader": "stm32duino",
+    "features": {
+        "bootmagic": true,
+        "extrakey": true,
+        "mousekey": true,
+        "nkro": true
+    },
+    "processor": "STM32F103",
+    "usb": {
+        "device_version": "0.0.1",
+        "vid": "0x4D4C"
+    }
+}

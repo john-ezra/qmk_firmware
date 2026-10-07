@@ -2031,6 +2031,9 @@
     "mechlovin/infinity87/rev1": {
         "target": "mechlovin/infinity87/rev1/standard"
     },
+    "mechlovin/infinity87/rev3": {
+        "target": "mechlovin/infinity87/rev3/standard"
+    },
     "mechlovin/infinity87": {
         "target": "mechlovin/infinity87/rgb_rev1"
     },
