@@ -1845,6 +1845,9 @@
     "hillside/52": {
         "target": "hillside/52/0_1"
     },
+    "hineybush/h60": {
+        "target": "hineybush/h60/standard"
+    },
     "ibnuda/squiggle": {
         "target": "ibnuda/squiggle/rev1"
     },
